@@ -1,0 +1,25 @@
+.divMain {
+  display: flex;
+  flex-direction: column;
+  width: 70px;
+  height: 70px;
+  margin: 20px;
+  background-color: rgba(255, 255, 255, 0.672);
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  border-radius: 15px;
+}
+
+.pArea,
+.pIcon {
+  margin: 0cqb;
+}
+
+.pIcon {
+  font-size: 30px;
+}
+
+.pArea {
+  font-weight: 700;
+}
