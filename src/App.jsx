@@ -40,6 +40,9 @@ function App() {
   return (
     <div>
       <h1>24-Hour Weather Forecast</h1>
+      {weatherData && (
+        <h2>{`${weatherData.general.temperature.low}°C / ${weatherData.general.temperature.high}°C`}</h2>
+      )}
       <button onClick={() => handlerOnClick("6 am")}>6am to 12pm</button>
       <button onClick={() => handlerOnClick("Midday")}>12pm to 6pm</button>
       <button onClick={() => handlerOnClick("6 pm")}>6pm to 6am</button>
