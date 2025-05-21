@@ -6,17 +6,32 @@ import "./App.css";
 
 function App() {
   const [weatherData, setWeatherData] = useState();
-  const [period, setPeriod] = useState(0);
+  const [period, setPeriod] = useState();
+
   async function apiGet() {
     try {
       const response = await govWeatherAPI.get();
       setWeatherData(response.data.data.records[0]);
-      // console.log(weatherData);
-      console.log(weatherData.periods[0].regions["north"].text);
+      console.log(weatherData);
+
+      const initialPeriod = Object.values(
+        response.data.data.records[0].periods
+      ).find((period) => period.timePeriod.text.startsWith("6 am"));
+      setPeriod(initialPeriod);
     } catch (error) {
       console.log(error.message);
     }
   }
+
+  const handlerOnClick = (e) => {
+    let newPeriod = null;
+    if (weatherData) {
+      newPeriod = Object.values(weatherData.periods).find((period) =>
+        period.timePeriod.text.startsWith(e)
+      );
+      setPeriod(newPeriod);
+    }
+  };
 
   useEffect(() => {
     apiGet();
@@ -25,44 +40,38 @@ function App() {
   return (
     <div>
       <h1>24-Hour Weather Forecast</h1>
-      <button onClick={() => setPeriod(0)}>6am to 12pm</button>
-      <button onClick={() => setPeriod(1)}>12pm to 6pm</button>
-      <button onClick={() => setPeriod(2)}>6pm to 6am</button>
+      <button onClick={() => handlerOnClick("6 am")}>6am to 12pm</button>
+      <button onClick={() => handlerOnClick("Midday")}>12pm to 6pm</button>
+      <button onClick={() => handlerOnClick("6 pm")}>6pm to 6am</button>
       {/* <button onClick={apiGet}>Get</button> */}
       <div className="map">
-        {weatherData && weatherData.periods[period] && (
+        {weatherData && period && period.regions && (
           <>
             <div className="north">
-              <WeatherIcon
-                area="North"
-                mode={weatherData.periods[period].regions["north"].text}
-              />
+              <WeatherIcon area="North" mode={period.regions["north"].text} />
             </div>
             <div className="south">
-              <WeatherIcon
-                area="South"
-                mode={weatherData.periods[period].regions["south"].text}
-              />
+              <WeatherIcon area="South" mode={period.regions["south"].text} />
             </div>
             <div className="east">
               <WeatherIcon
                 className="east"
                 area="East"
-                mode={weatherData.periods[period].regions["east"].text}
+                mode={period.regions["east"].text}
               />
             </div>
             <div className="west">
               <WeatherIcon
                 className="west"
                 area="West"
-                mode={weatherData.periods[period].regions["west"].text}
+                mode={period.regions["west"].text}
               />
             </div>
             <div className="central">
               <WeatherIcon
                 className="central"
                 area="Central"
-                mode={weatherData.periods[period].regions["central"].text}
+                mode={period.regions["central"].text}
               />
             </div>
           </>

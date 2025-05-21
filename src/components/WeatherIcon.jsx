@@ -46,7 +46,6 @@ function WeatherIcon({ area, mode }) {
   } else if (weatherConditions.thunderyRain.includes(mode)) {
     icon = "⛈️";
   }
-
   return (
     <div className={styles.divMain}>
       <p className={styles.pArea}>{area}</p>
